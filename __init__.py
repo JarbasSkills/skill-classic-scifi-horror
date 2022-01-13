@@ -11,14 +11,12 @@ class ClassicScifiHorrorSkill(OVOSCommonPlaybackSkill):
 
     def __init__(self):
         super().__init__("ClassicScifiHorror")
-        self.supported_media = [MediaType.MOVIE, MediaType.GENERIC]
+        self.supported_media = [MediaType.BLACK_WHITE_MOVIE, MediaType.MOVIE, MediaType.GENERIC]
         self.skill_icon = join(dirname(__file__), "ui", "scifihorror.png")
         self.archive = IAArchivist("SciFi_Horror")
 
     def initialize(self):
-        if len(self.archive.db) == 0:
-            # no database, download from url TODO
-            self.archive.archive_collection("SciFi_Horror")
+        self.archive.bootstrap_from_url(f"https://github.com/OpenJarbas/streamindex/raw/main/{self.archive.db.name}.json")
 
     def normalize_title(self, title):
         title = title.lower().strip()
